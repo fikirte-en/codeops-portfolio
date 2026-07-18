@@ -1,0 +1,8 @@
+Paracetamol,150
+Ibuprofen,300
+Amoxil,600
+Advil,200
+Tylenol,7
+Zinc,8
+amoxil,4
+adrt,8
