@@ -8,3 +8,4 @@ node_modules/
 # build output and system files
 dist/
 .DS_Store
+__pycache__/
