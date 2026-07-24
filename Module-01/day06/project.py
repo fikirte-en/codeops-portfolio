@@ -30,7 +30,7 @@ class BankAccount:
         self.account = account_number
         self._balance = balance
         self._observers = []
-        self.history = []
+
     @property
     def balance(self):
         return self._balance
@@ -46,9 +46,7 @@ class BankAccount:
         if amount <= 0:
             print("Deposit failed: amount must be positive.")
             return
-        
         self._balance += amount
-        self.history.append(("deposit", amount)) 
         print(f"Deposited {amount:.2f} ETB. New balance: {self._balance:.2f} ETB")
         self._notify(f"{self.owner} deposited {amount:.2f} ETB")
 
@@ -60,7 +58,6 @@ class BankAccount:
             print(f"Withdrawal failed: insufficient funds. Current balance: {self._balance:.2f} ETB")
             return
         self._balance -= amount
-        self.history.append(("withdraw", amount)) 
         print(f"Withdrew {amount:.2f} ETB. New balance: {self._balance:.2f} ETB")
         self._notify(f"{self.owner} withdrew {amount:.2f} ETB")
         if self._balance < 100:
@@ -68,17 +65,7 @@ class BankAccount:
 
     def statement(self):
         return f"Owner: {self.owner}, Account: {self.account}, Balance: {self._balance:.2f} ETB"
-    def undo_last(self):
-      if not self.history:
-        print("No transactions to undo.")
-        return
-      action, amount = self.history.pop()
-      if action == "deposit":
-        self._balance -= amount
-        print(f"Undid deposit of {amount:.2f} ETB. Balance: {self._balance:.2f} ETB")
-      elif action == "withdraw":
-        self._balance += amount
-        print(f"Undid withdrawal of {amount:.2f} ETB. Balance: {self._balance:.2f} ETB")
+
 
 class SavingAccount(BankAccount):
     def __init__(self, owner, account_number, balance=0):
@@ -121,19 +108,6 @@ class AccountFactory:
         if kind == "current":
             return CurrentAccount(owner, number, balance)
         raise ValueError(f"Unknown account kind: {kind}")
-
-class AccountRegistry:
-    def __init__(self):
-        self._accounts = {}
-
-    def add(self, account):
-        self._accounts[account.account] = account
-
-    def find(self, account_number):
-        return self._accounts.get(account_number)
-
-    def list_all(self):
-        return [self._accounts[num] for num in sorted(self._accounts)]
 
 
 
